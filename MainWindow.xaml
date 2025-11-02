@@ -5,8 +5,62 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:minesweeper"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="620" Width="550">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
+        <!-- 상단 정보 패널 -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
+            <TextBlock Text="지뢰: " FontSize="16" FontWeight="Bold"/>
+            <TextBlock Text="{Binding RemainingMines}" FontSize="16" FontWeight="Bold" Foreground="Red" Width="40" TextAlignment="Right"/>
+            <Button Content="🔄 새 게임"
+                Command="{Binding ResetClickCommand}"
+                Width="110" Height="30" Margin="20,0,20,0"
+                FontSize="14"/>
+        </StackPanel>
+
+        <!-- 상태 메시지 -->
+        <TextBlock Grid.Row="1"
+               Text="{Binding StatusMessage}"
+               FontSize="14"
+               HorizontalAlignment="Center"
+               Margin="0,0,0,10"
+               Foreground="Gray"/>
+
+        <!-- 게임 보드 -->
+        <ItemsControl Grid.Row="2" ItemsSource="{Binding Cells}"
+                  Width="500" Height="500">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Rows="9" Columns="9"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Content="{Binding DisplayText}"
+                        Background="{Binding Background}"
+                        Foreground="{Binding Foreground}"
+                        IsEnabled="{Binding IsEnabled}"
+                        BorderBrush="DarkGray"
+                        BorderThickness="1"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Margin="1"
+                        Command="{Binding DataContext.LeftClickCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                        CommandParameter="{Binding}">
+                        <Button.InputBindings>
+                            <MouseBinding Gesture="RightClick"
+                                      Command="{Binding DataContext.RightClickCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                      CommandParameter="{Binding}"/>
+                        </Button.InputBindings>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </Window>

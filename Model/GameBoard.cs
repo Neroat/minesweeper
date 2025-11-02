@@ -53,7 +53,7 @@ namespace minesweeper.Model
                 Cells[row, col].IsMine = true;
             }
             IsMinePlaced = true;
-
+            PlaceAdjacentMines();
         }
 
         //1,2,3,4 등 힌트 설치
@@ -75,13 +75,13 @@ namespace minesweeper.Model
             int count = 0;
             for (int nearRow = -1; nearRow <= 1; nearRow++)
             {
-                for (int nearCol = 0; nearCol <= 1; nearCol++)
+                for (int nearCol = -1; nearCol <= 1; nearCol++)
                 {
                     if (nearRow == 0 && nearCol == 0)
                         continue;
                     int checkRow = row + nearRow;
                     int checkCol = col + nearCol;
-                    if (IsValidCell(checkRow, checkCol) && Cells[checkRow, checkCol].IsMine)
+                    if (IsExistCell(checkRow, checkCol) && Cells[checkRow, checkCol].IsMine)
                         count++;
                 }
             }
@@ -89,7 +89,7 @@ namespace minesweeper.Model
         }
 
         //실존하는 칸인지 체크
-        public bool IsValidCell(int row, int col)
+        public bool IsExistCell(int row, int col)
         {
             return row>=0 && row < GridSize && col>=0 && col < GridSize;
         }
