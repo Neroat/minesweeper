@@ -41,7 +41,8 @@ namespace minesweeper.Model
             if (IsMinePlaced)
                 return;
             Random random = new Random();
-            for (int i = 0; i < MineCount; i++)
+            int placedMines = 0;
+            while(placedMines< MineCount) 
             {
                 int row = random.Next(GridSize);
                 int col = random.Next(GridSize);
@@ -51,6 +52,7 @@ namespace minesweeper.Model
                     continue;
 
                 Cells[row, col].IsMine = true;
+                placedMines++;
             }
             IsMinePlaced = true;
             PlaceAdjacentMines();

@@ -43,7 +43,6 @@ namespace minesweeper.ViewModel
         public ObservableCollection<CellViewModel> Cells { get; set; }
         public MainViewModel()
         {
-            
             _gameBoard = new GameBoard();
             Cells = new ObservableCollection<CellViewModel>();
             LeftClickCommand = new RelayCommand(LeftClick);
@@ -54,6 +53,7 @@ namespace minesweeper.ViewModel
         }
         private void InitializeGame()
         {
+               
             _flagCount = 0;
             _remainingCells = GameBoard.GridSize * GameBoard.GridSize - GameBoard.MineCount;
             _isGameOver = false;
@@ -106,6 +106,8 @@ namespace minesweeper.ViewModel
 
         private void RevealCell(int row, int col)
         {
+            if (!_gameBoard.IsExistCell(row, col)) 
+                return;
             if (_isGameEnd) 
                 return;
             CellViewModel cellVM = GetCorrectCellVM(row, col);
@@ -141,7 +143,7 @@ namespace minesweeper.ViewModel
             _isGameOver = true;
             foreach (var cellVM in Cells)
             {
-                if(cellVM.IsMine)
+                if(cellVM.IsMine || !cellVM.IsRevealed)
                 {
                     cellVM.IsRevealed = true;
                     cellVM.UpdateDisplay();
